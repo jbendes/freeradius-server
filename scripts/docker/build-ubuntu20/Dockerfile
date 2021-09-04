@@ -9,6 +9,9 @@ ARG dh_key_size=2048
 
 WORKDIR /usr/local/src/repositories/freeradius-server
 RUN git checkout ${branch}
+RUN rm -f config.guess config.sub && \
+    wget http://savannah.gnu.org/cgi-bin/viewcvs/*checkout*/config/config/config.guess && \
+    wget http://savannah.gnu.org/cgi-bin/viewcvs/*checkout*/config/config/config.sub
 RUN CC=${cc} ./configure --prefix=/opt/freeradius
 RUN make -j$(($(getconf _NPROCESSORS_ONLN) + 1))
 RUN make install
